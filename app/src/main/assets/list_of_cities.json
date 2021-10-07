@@ -1,0 +1,16 @@
+{
+  "cities" :[
+       {
+          "name":"city1",
+          "address":"city 1 address"
+       },
+       {
+          "name":"city2",
+          "address":"city 2 address"
+       },
+       {
+          "name":"city3",
+          "address":"city 3 address"
+       }
+  ]
+}
