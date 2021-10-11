@@ -1,7 +1,7 @@
-package com.example.myapplication
+package com.example.myapplication.ui.city
 
 import android.content.Context
-import android.util.Log
+import com.example.myapplication.data.model.CityItem
 import org.json.JSONObject
 import java.io.IOException
 
@@ -22,15 +22,10 @@ class Presenter(val context: Context) {
         return listAdapter
     }
 
-    fun search(query: String){
-        val list = setListAdapter()
-        for (item in list){
-            if (item.name == query){
-                Log.d(TAG, "search: $query")
-            } else {
-                Log.d(TAG, "search: No result")
-            }
-        }
+    fun search(query: String?) =  if (query != null) {
+        setListAdapter().filter { it.name == query }
+    }else{
+        emptyList()
     }
 
     private fun getJsonDataFromAsset(): String? {

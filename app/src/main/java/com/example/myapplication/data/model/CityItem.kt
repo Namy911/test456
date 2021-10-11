@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.data.model
 
 data class CityItem(
     val address: String,

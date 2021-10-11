@@ -12,7 +12,7 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
-
+        buildConfigField "String", "AUTH_LOGOUT", "\"${applicationId + ".AUTH_LOGOUT"}\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -47,4 +47,6 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
 
     implementation 'com.google.code.gson:gson:2.8.8'
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.preference:preference-ktx:1.1.1"
 }

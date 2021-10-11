@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.ui.city
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CityAdapter.CityViewHolder
+import com.example.myapplication.data.model.CityItem
 import com.example.myapplication.databinding.CityItemBinding
 
-class CityAdapter : ListAdapter<CityItem, CityViewHolder>(diff) {
+class CityAdapter : ListAdapter<CityItem, CityAdapter.CityViewHolder>(diff) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityViewHolder {
         return CityViewHolder(
             CityItemBinding.inflate(LayoutInflater.from(parent.context))

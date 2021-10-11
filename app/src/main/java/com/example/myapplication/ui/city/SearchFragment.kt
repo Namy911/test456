@@ -1,13 +1,17 @@
-package com.example.myapplication
+package com.example.myapplication.ui.city
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSearchBinding
+import com.example.myapplication.ui.pef.AppPrefDataStore
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
     private var  _binding: FragmentSearchBinding? = null
@@ -18,10 +22,12 @@ class SearchFragment : Fragment() {
         super.onAttach(context)
         presenter = Presenter(context)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,11 +37,13 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val list = presenter.setListAdapter()
         binding.apply {
             toolbar.inflateMenu(R.menu.menu_search)
+            (binding.toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
+                setOnQueryTextListener(SearchCity(this))
+            }
             cityRoster.apply {
-                adapter = CityAdapter().also { it.submitList(list) }
+                adapter = CityAdapter().also { it.submitList(emptyList()) }
                 layoutManager = LinearLayoutManager(
                     requireActivity(), LinearLayoutManager.VERTICAL,false
                 )
@@ -43,38 +51,29 @@ class SearchFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.menu_search, menu)
-//        val searchView = menu.findItem(R.id.app_bar_search).actionView as SearchView
-        val searchView = binding.toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    presenter.search(query)
-                    searchView.clearFocus()
-                }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                Log.d(TAG, "onQueryTextChange: ")
-                return true
-            }
-        })
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.test){
-            Log.d(TAG, "onOptionsItemSelected:  True")
-            true
-        }else{
-            Log.d(TAG, "onOptionsItemSelected: Error")
-            false
-        }
-    }
     companion object {
         @JvmStatic
         fun newInstance() = SearchFragment()
         private const val TAG = "SearchFragment"
+    }
+
+    inner class SearchCity(private val searchView: SearchView) : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            binding.cityRoster.adapter = CityAdapter().also { cityAdapter ->
+                (presenter.search(query).toMutableList()).also { list ->
+                    if (list.isNotEmpty()) {
+                        cityAdapter.submitList(list)
+                    } else {
+                        Toast.makeText(requireContext(), "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            searchView.clearFocus()
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return false
+        }
     }
 }
