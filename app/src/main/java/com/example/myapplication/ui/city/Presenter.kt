@@ -1,9 +1,8 @@
 package com.example.myapplication.ui.city
 
 import android.content.Context
-import com.example.myapplication.MainActivity
+import android.util.Log
 import com.example.myapplication.data.model.CityItem
-import com.example.myapplication.ui.login.LoginFragment
 import com.example.myapplication.ui.pef.AppPrefDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +11,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 class Presenter(
+    private val view: SearchView?,
     private val context: Context,
     private val ioScope: CoroutineScope = CoroutineScope(Dispatchers.IO),
 ) {
@@ -32,10 +32,20 @@ class Presenter(
         return listAdapter
     }
 
-    fun search(query: String?) = if (query != null) {
-        setListAdapter().filter { it.name == query }
-    } else {
-        emptyList()
+    fun search(query: String?) {
+        if (query != null) {
+            val result = setListAdapter().filter { it.name == query }
+            result.forEach{
+                Log.d(TAG, "search: ${it.name}")
+            }
+            if (result.isNotEmpty()) {
+                view?.setAdapter(result.toMutableList())
+            }else{
+                view?.pageNotFound()
+            }
+        } else {
+            view?.pageNotFound()
+        }
     }
 
     private fun getJsonDataFromAsset(): String? {

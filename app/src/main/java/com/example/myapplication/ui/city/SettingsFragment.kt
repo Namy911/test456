@@ -27,7 +27,7 @@ class SettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = Presenter(requireContext())
+        presenter = Presenter(null, requireContext())
     }
 
     override fun onCreateView(
