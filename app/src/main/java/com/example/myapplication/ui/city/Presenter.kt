@@ -1,13 +1,23 @@
 package com.example.myapplication.ui.city
 
 import android.content.Context
+import com.example.myapplication.MainActivity
 import com.example.myapplication.data.model.CityItem
+import com.example.myapplication.ui.login.LoginFragment
+import com.example.myapplication.ui.pef.AppPrefDataStore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.IOException
 
-class Presenter(val context: Context) {
+class Presenter(
+    private val context: Context,
+    private val ioScope: CoroutineScope = CoroutineScope(Dispatchers.IO),
+) {
     private val TAG = "Presenter"
-    fun setListAdapter(): MutableList<CityItem> {
+
+    private fun setListAdapter(): MutableList<CityItem> {
         val jsonFileString = getJsonDataFromAsset()
         val jsonArrayCity = JSONObject(jsonFileString!!).getJSONArray("cities")
         val listAdapter = mutableListOf<CityItem>()
@@ -22,23 +32,25 @@ class Presenter(val context: Context) {
         return listAdapter
     }
 
-    fun search(query: String?) =  if (query != null) {
+    fun search(query: String?) = if (query != null) {
         setListAdapter().filter { it.name == query }
-    }else{
+    } else {
         emptyList()
     }
 
     private fun getJsonDataFromAsset(): String? {
-        val jsonString: String
-        try {
-            jsonString = context.assets.open(FILE_NAME)
+        return try {
+            context.assets.open(FILE_NAME)
                 .bufferedReader()
                 .use { it.readText() }
         } catch (ioException: IOException) {
             ioException.printStackTrace()
             return null
         }
-        return jsonString
+    }
+
+    fun clearData() {
+        ioScope.launch { AppPrefDataStore(context).clearAllData() }
     }
 
     companion object {

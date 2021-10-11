@@ -6,21 +6,24 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSearchBinding
-import com.example.myapplication.ui.pef.AppPrefDataStore
-import kotlinx.coroutines.launch
+
 
 class SearchFragment : Fragment() {
     private var  _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     lateinit var presenter: Presenter
+    private lateinit var hostActivity: MainActivity
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         presenter = Presenter(context)
+        if (context is MainActivity){
+            hostActivity = context
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +40,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        hostActivity.showItemBottomMenu(R.id.settings)
         binding.apply {
             toolbar.inflateMenu(R.menu.menu_search)
             (binding.toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
