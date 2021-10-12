@@ -39,7 +39,6 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.SearchV
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = Presenter(this, requireContext())
-        hostActivity.showItemBottomMenu(R.id.settings)
         binding.apply {
             toolbar.inflateMenu(R.menu.menu_search)
             (toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
@@ -81,7 +80,7 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.SearchV
     companion object {
         @JvmStatic
         fun newInstance() = SearchFragment()
-        private const val TAG = "SearchFragment"
+        const val TAG = "SearchFragment"
     }
 
     inner class SearchCity(private val searchView: SearchView) : SearchView.OnQueryTextListener {

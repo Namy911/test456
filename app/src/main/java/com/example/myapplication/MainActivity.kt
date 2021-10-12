@@ -3,6 +3,7 @@ package com.example.myapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -28,11 +29,11 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when(item.itemId){
                 R.id.settings -> {
-                    navigateTo(SettingsFragment.newInstance())
+                    navigateTo(SettingsFragment.newInstance(), SettingsFragment.TAG)
                     true
                 }
                 R.id.home -> {
-                    navigateTo(MainFragment.newInstance())
+                    navigateTo(MainFragment.newInstance(), MainFragment.TAG)
                     true
                 }
                 else -> { false }
@@ -53,22 +54,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun hideItemBottomMenu(@IdRes item: Int){
-        val result = binding.bottomNavigation.menu.findItem(item)
-        if (result.isVisible) {
-            result.isVisible = false
-        }
-    }
-
-    fun showItemBottomMenu(@IdRes item: Int){
-        val result = binding.bottomNavigation.menu.findItem(item)
-        if (!result.isVisible) {
-            result.isVisible = true
-        }
-    }
-
-    fun navigateTo(fragment: Fragment){
+    fun navigateTo(fragment: Fragment, tag: String?){
         supportFragmentManager.beginTransaction()
+            .addToBackStack(tag)
             .replace(R.id.container, fragment)
             .commit()
     }

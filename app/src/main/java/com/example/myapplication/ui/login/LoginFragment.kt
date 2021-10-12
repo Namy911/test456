@@ -15,16 +15,18 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
-    private var  _binding: FragmentLoginBinding? = null
+    private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var hostActivity: MainActivity
+    private lateinit var appPref: AppPrefDataStore
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MainActivity){
+        if (context is MainActivity) {
             hostActivity = context
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,26 +36,28 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        appPref = AppPrefDataStore(requireContext())
         hostActivity.hideBottomMenu()
         binding.apply {
             lifecycleScope.launch {
-                AppPrefDataStore(requireContext()).userPass.collect {
+                appPref.userPass.collect {
                     txtPass.text = it.toString()
                 }
             }
-            btnPref.setOnClickListener {
-                lifecycleScope.launch {
-                    AppPrefDataStore(requireContext()).setPrefUserLogin()
-                }
-
-            }
             btnLogin.setOnClickListener {
-                hostActivity.navigateTo(MainFragment.newInstance())
+//                hostActivity.navigateTo(MainFragment.newInstance())
+                lifecycleScope.launch {
+                    appPref.setPrefUserLogin()
+                }
+            }
+            button.setOnClickListener {
+                hostActivity.navigateTo(MainFragment.newInstance(), TAG)
             }
         }
     }
 
     companion object {
+        const val TAG = "LoginFragment"
         @JvmStatic
         fun newInstance() = LoginFragment()
     }
