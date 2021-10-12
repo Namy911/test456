@@ -15,7 +15,6 @@ import com.example.myapplication.databinding.FragmentSettingsBinding
 import com.example.myapplication.ui.login.LoginFragment
 
 class SettingsFragment : Fragment() {
-
     private var  _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var presenter: Presenter
@@ -23,9 +22,7 @@ class SettingsFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MainActivity){
-            hostActivity = context
-        }
+        if (context is MainActivity){ hostActivity = context }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +45,7 @@ class SettingsFragment : Fragment() {
         }
         binding.apply {
             toolbar.setNavigationOnClickListener {
-                childFragmentManager.popBackStack(null, 0)
+                hostActivity.navigateUp()
             }
             search.setOnClickListener {
                 hostActivity.navigateTo(SearchFragment.newInstance(), SearchFragment.TAG)

@@ -16,7 +16,7 @@ import com.example.myapplication.databinding.FragmentSearchBinding
 class SearchFragment : Fragment(), com.example.myapplication.ui.settings.SearchView {
     private var  _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    lateinit var presenter: Presenter
+    private lateinit var presenter: Presenter
     private lateinit var hostActivity: MainActivity
 
     override fun onAttach(context: Context) {

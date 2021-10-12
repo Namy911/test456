@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
-
     private  var _binding: FragmentMainBinding? = null
     private val binding get()  = _binding!!
     private lateinit var hostActivity: MainActivity
@@ -26,9 +25,7 @@ class MainFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MainActivity){
-            hostActivity = context
-        }
+        if (context is MainActivity){ hostActivity = context }
     }
 
     override fun onCreateView(
@@ -50,7 +47,7 @@ class MainFragment : Fragment() {
         }
     }
     companion object {
-        val TAG = "MainFragment"
+        const val TAG = "MainFragment"
         @JvmStatic
         fun newInstance() = MainFragment()
     }

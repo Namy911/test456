@@ -22,9 +22,7 @@ class LoginFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MainActivity) {
-            hostActivity = context
-        }
+        if (context is MainActivity) { hostActivity = context }
     }
 
     override fun onCreateView(
