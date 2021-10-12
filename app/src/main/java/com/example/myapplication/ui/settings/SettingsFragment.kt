@@ -1,34 +1,32 @@
 package com.example.myapplication.ui.settings
 
-import android.app.ActionBar
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.addCallback
-import com.example.myapplication.MainActivity
-import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSettingsBinding
+import com.example.myapplication.AppNavigation
+import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.ui.login.LoginFragment
+import com.example.myapplication.utlis.AssistedManager
 
 class SettingsFragment : Fragment() {
     private var  _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var presenter: Presenter
-    private lateinit var hostActivity: MainActivity
+    private lateinit var hostActivity: AppNavigation
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MainActivity){ hostActivity = context }
+        if (context is AppNavigation){ hostActivity = context }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
-        presenter = Presenter(null, requireContext())
+        presenter = Presenter(null, Repository(AssistedManager(requireContext())))
     }
 
     override fun onCreateView(
@@ -44,9 +42,6 @@ class SettingsFragment : Fragment() {
             showBottomMenu()
         }
         binding.apply {
-            toolbar.setNavigationOnClickListener {
-                hostActivity.navigateUp()
-            }
             search.setOnClickListener {
                 hostActivity.navigateTo(SearchFragment.newInstance(), SearchFragment.TAG)
             }

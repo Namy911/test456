@@ -7,22 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.example.myapplication.MainActivity
 import com.example.myapplication.databinding.FragmentLoginBinding
+import com.example.myapplication.AppNavigation
 import com.example.myapplication.ui.settings.MainFragment
-import com.example.myapplication.ui.pef.AppPrefDataStore
+import com.example.myapplication.pef.AppPrefDataStore
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private lateinit var hostActivity: MainActivity
+    private lateinit var hostActivity: AppNavigation
     private lateinit var appPref: AppPrefDataStore
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MainActivity) { hostActivity = context }
+        if (context is AppNavigation) { hostActivity = context }
     }
 
     override fun onCreateView(

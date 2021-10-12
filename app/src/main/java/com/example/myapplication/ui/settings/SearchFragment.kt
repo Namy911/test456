@@ -7,21 +7,24 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.data.model.CityItem
 import com.example.myapplication.databinding.FragmentSearchBinding
+import com.example.myapplication.AppNavigation
+import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.utlis.AssistedManager
 
 
-class SearchFragment : Fragment(), com.example.myapplication.ui.settings.SearchView {
+class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contract.SearchView {
     private var  _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private lateinit var presenter: Presenter
-    private lateinit var hostActivity: MainActivity
+    private lateinit var hostActivity: AppNavigation
+    private lateinit var searchView: SearchView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MainActivity){ hostActivity = context }
+        if (context is AppNavigation){ hostActivity = context }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +41,11 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.SearchV
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter = Presenter(this, requireContext())
+        presenter = Presenter(this, Repository(AssistedManager(requireContext())))
         binding.apply {
             toolbar.inflateMenu(R.menu.menu_search)
-            (toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
-                setOnQueryTextListener(SearchCity(this))
+             searchView = (toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
+                setOnQueryTextListener(queryTextListener)
             }
             cityRoster.apply {
                 adapter = CityAdapter().also { it.submitList(emptyList()) }
@@ -53,7 +56,19 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.SearchV
         }
     }
 
-    override fun setAdapter(list: MutableList<CityItem>) {
+    private val queryTextListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            presenter.search(query)
+            searchView.clearFocus()
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return false
+        }
+    }
+
+    override fun setAdapter(list: List<CityItem>) {
         binding.apply {
             if (!cityRoster.isVisible) {
                 cityRoster.visibility = View.VISIBLE
@@ -81,17 +96,5 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.SearchV
         @JvmStatic
         fun newInstance() = SearchFragment()
         const val TAG = "SearchFragment"
-    }
-
-    inner class SearchCity(private val searchView: SearchView) : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            presenter.search(query)
-            searchView.clearFocus()
-            return true
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
-        }
     }
 }

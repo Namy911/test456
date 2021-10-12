@@ -16,8 +16,6 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             app:title="Settings"
-            app:navigationIcon="@drawable/baseline_arrow_back_ios_new_white_24"
-            app:titleTextColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/colorPrimary"

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.pef
+package com.example.myapplication.pef
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 class AppPrefDataStore(val context: Context) {
-    val KEY_USER_PASS = intPreferencesKey(USER_DATA_NODE)
+    private val KEY_USER_PASS = intPreferencesKey(USER_DATA_NODE)
 
     val userPass: Flow<Int> = context.dataStore.data
         .map { preferences -> preferences[KEY_USER_PASS] ?: 0 }
@@ -24,6 +24,7 @@ class AppPrefDataStore(val context: Context) {
     suspend fun clearAllData(){
         context.dataStore.edit{ it.clear() }
     }
+
     companion object{
         const val USER_DATA_NODE = "user_pass"
     }

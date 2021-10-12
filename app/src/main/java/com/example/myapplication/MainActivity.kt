@@ -10,7 +10,7 @@ import com.example.myapplication.ui.settings.MainFragment
 import com.example.myapplication.ui.settings.SettingsFragment
 import com.example.myapplication.ui.login.LoginFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AppNavigation {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,26 +37,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun hideBottomMenu(){
+    override fun hideBottomMenu(){
         if (binding.bottomNavigation.isVisible) {
             binding.bottomNavigation.visibility = View.GONE
         }
     }
 
-    fun showBottomMenu(){
+    override fun showBottomMenu(){
         if (!binding.bottomNavigation.isVisible) {
             binding.bottomNavigation.visibility = View.VISIBLE
         }
     }
 
-    fun navigateTo(fragment: Fragment, tag: String?){
+    override fun navigateTo(fragment: Fragment, tag: String?){
         supportFragmentManager.beginTransaction()
             .addToBackStack(tag)
             .replace(R.id.container, fragment)
             .commit()
     }
 
-    fun navigateUp(){
+    override fun navigateUp(){
         if (supportFragmentManager.backStackEntryCount > 0 ){
             supportFragmentManager.popBackStack();
         } else {
