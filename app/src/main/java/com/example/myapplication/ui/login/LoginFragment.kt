@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.MainActivity
 import com.example.myapplication.databinding.FragmentLoginBinding
-import com.example.myapplication.ui.city.MainFragment
+import com.example.myapplication.ui.settings.MainFragment
 import com.example.myapplication.ui.pef.AppPrefDataStore
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

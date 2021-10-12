@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.city
+package com.example.myapplication.ui.settings
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

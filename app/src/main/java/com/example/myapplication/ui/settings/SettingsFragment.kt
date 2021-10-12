@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.city
+package com.example.myapplication.ui.settings
 
 import android.content.Context
 import android.os.Bundle
@@ -40,8 +40,9 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         hostActivity.apply {
-            showBottomMenu()
-            hideItemBottomMenu(R.id.settings)
+            hideBottomMenu()
+//            showBottomMenu()
+//            hideItemBottomMenu(R.id.settings)
         }
         binding.apply {
             search.setOnClickListener {

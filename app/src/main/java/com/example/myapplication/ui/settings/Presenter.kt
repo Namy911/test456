@@ -1,7 +1,6 @@
-package com.example.myapplication.ui.city
+package com.example.myapplication.ui.settings
 
 import android.content.Context
-import android.util.Log
 import com.example.myapplication.data.model.CityItem
 import com.example.myapplication.ui.pef.AppPrefDataStore
 import kotlinx.coroutines.CoroutineScope
@@ -35,12 +34,9 @@ class Presenter(
     fun search(query: String?) {
         if (query != null) {
             val result = setListAdapter().filter { it.name == query }
-            result.forEach{
-                Log.d(TAG, "search: ${it.name}")
-            }
             if (result.isNotEmpty()) {
                 view?.setAdapter(result.toMutableList())
-            }else{
+            } else {
                 view?.pageNotFound()
             }
         } else {

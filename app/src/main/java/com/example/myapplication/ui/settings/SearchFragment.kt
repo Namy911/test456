@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.city
+package com.example.myapplication.ui.settings
 
 import android.content.Context
 import android.os.Bundle
@@ -13,7 +13,7 @@ import com.example.myapplication.data.model.CityItem
 import com.example.myapplication.databinding.FragmentSearchBinding
 
 
-class SearchFragment : Fragment(), com.example.myapplication.ui.city.SearchView {
+class SearchFragment : Fragment(), com.example.myapplication.ui.settings.SearchView {
     private var  _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     lateinit var presenter: Presenter
@@ -21,9 +21,7 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.city.SearchView 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MainActivity){
-            hostActivity = context
-        }
+        if (context is MainActivity){ hostActivity = context }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +42,7 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.city.SearchView 
         hostActivity.showItemBottomMenu(R.id.settings)
         binding.apply {
             toolbar.inflateMenu(R.menu.menu_search)
-            (binding.toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
+            (toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
                 setOnQueryTextListener(SearchCity(this))
             }
             cityRoster.apply {
@@ -57,24 +55,26 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.city.SearchView 
     }
 
     override fun setAdapter(list: MutableList<CityItem>) {
-        if (!binding.cityRoster.isVisible) {
-            binding.cityRoster.visibility = View.VISIBLE
-        }
-        val page = binding.img404
-        if (page.isVisible) {
-            page.visibility = View.GONE
-        }
-        binding.cityRoster.adapter = CityAdapter().also { cityAdapter ->
-            cityAdapter.currentList.clear()
-            cityAdapter.submitList(list)
+        binding.apply {
+            if (!cityRoster.isVisible) {
+                cityRoster.visibility = View.VISIBLE
+            }
+            if (img404.isVisible) {
+                img404.visibility = View.GONE
+            }
+            cityRoster.adapter = CityAdapter().also { cityAdapter ->
+                cityAdapter.currentList.clear()
+                cityAdapter.submitList(list)
+            }
         }
     }
 
     override fun pageNotFound(){
-        val page = binding.img404
-        if (!page.isVisible) {
-            page.visibility = View.VISIBLE
-            binding.cityRoster.visibility = View.GONE
+        binding.apply {
+            if (!img404.isVisible) {
+                img404.visibility = View.VISIBLE
+                binding.cityRoster.visibility = View.GONE
+            }
         }
     }
 

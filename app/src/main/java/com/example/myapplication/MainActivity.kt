@@ -7,8 +7,8 @@ import androidx.annotation.IdRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.ui.city.MainFragment
-import com.example.myapplication.ui.city.SettingsFragment
+import com.example.myapplication.ui.settings.MainFragment
+import com.example.myapplication.ui.settings.SettingsFragment
 import com.example.myapplication.ui.login.LoginFragment
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                     navigateTo(MainFragment.newInstance())
                     true
                 }
-                else -> { false}
+                else -> { false }
             }
 
         }

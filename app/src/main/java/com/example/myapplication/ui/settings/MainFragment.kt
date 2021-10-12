@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.city
+package com.example.myapplication.ui.settings
 
 import android.content.Context
 import android.os.Bundle
