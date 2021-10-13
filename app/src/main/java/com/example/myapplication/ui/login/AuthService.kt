@@ -1,10 +1,9 @@
-package com.example.myapplication.ui.settings
+package com.example.myapplication.ui.login
 
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import androidx.core.os.bundleOf
 import com.example.myapplication.pef.AppPrefDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

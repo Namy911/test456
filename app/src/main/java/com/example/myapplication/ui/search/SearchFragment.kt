@@ -1,10 +1,9 @@
-package com.example.myapplication.ui.settings.search
+package com.example.myapplication.ui.search
 
 import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
@@ -15,7 +14,7 @@ import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.utlis.AssetsManager
 
 
-class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contract.SearchView {
+class SearchFragment : Fragment(), com.example.myapplication.ui.settings.SearchView {
     private var  _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private lateinit var searchPresenter: SearchPresenter

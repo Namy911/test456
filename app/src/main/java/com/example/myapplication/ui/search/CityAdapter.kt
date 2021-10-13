@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.settings.search
+package com.example.myapplication.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

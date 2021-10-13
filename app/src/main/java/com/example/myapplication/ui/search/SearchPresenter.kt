@@ -1,8 +1,7 @@
-package com.example.myapplication.ui.settings.search
+package com.example.myapplication.ui.search
 
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.settings.contract.SearchView
-import kotlinx.coroutines.*
+import com.example.myapplication.ui.settings.SearchView
 
 class SearchPresenter(
     private val searchView: SearchView,

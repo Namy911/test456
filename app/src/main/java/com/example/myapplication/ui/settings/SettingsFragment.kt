@@ -2,7 +2,6 @@ package com.example.myapplication.ui.settings
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +13,10 @@ import com.example.myapplication.R
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.pef.AppPrefDataStore
 import com.example.myapplication.ui.login.LoginFragment
-import com.example.myapplication.ui.settings.contract.SettingsView
-import com.example.myapplication.ui.settings.search.SearchFragment
-import com.example.myapplication.ui.settings.search.SearchPresenter
+import com.example.myapplication.ui.search.SettingsView
+import com.example.myapplication.ui.search.SearchFragment
 import com.example.myapplication.utlis.AssetsManager
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment(), SettingsView {
@@ -66,7 +63,8 @@ class SettingsFragment : Fragment(), SettingsView {
             btnLoginNav.setOnClickListener {
                 navigation.navigateTo(LoginFragment.newInstance(), LoginFragment.TAG)
             }
-            rgUnitPref.setOnCheckedChangeListener { group, id ->
+            // write in dat store chose
+            rgUnitPref.setOnCheckedChangeListener { _, id ->
                 lifecycleScope.launch {
                     when (id) {
                         R.id.unit_pref_c -> {
@@ -87,14 +85,14 @@ class SettingsFragment : Fragment(), SettingsView {
     private fun redirect() {
         navigation.navigateTo(LoginFragment.newInstance(), LoginFragment.TAG)
     }
-
+    // ini radio group with pref
     override fun setUnitPreference() {
         lifecycleScope.launchWhenResumed {
             AppPrefDataStore(requireContext()).unitPref.collect { unit ->
                 when(unit){
-                    0 -> {binding.rgUnitPref.check(R.id.unit_pref_k)}
-                    1 -> {binding.rgUnitPref.check(R.id.unit_pref_c)}
-                    2 -> {binding.rgUnitPref.check(R.id.unit_pref_f)}
+                    0 -> { binding.rgUnitPref.check(R.id.unit_pref_k) }
+                    1 -> { binding.rgUnitPref.check(R.id.unit_pref_c) }
+                    2 -> { binding.rgUnitPref.check(R.id.unit_pref_f) }
                 }
             }
         }
