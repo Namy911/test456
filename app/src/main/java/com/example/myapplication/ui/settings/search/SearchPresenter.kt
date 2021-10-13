@@ -1,26 +1,25 @@
-package com.example.myapplication.ui.settings
+package com.example.myapplication.ui.settings.search
 
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.ui.settings.contract.SearchView
+import kotlinx.coroutines.*
 
-class Presenter(
-    private val view: SearchView?,
+class SearchPresenter(
+    private val searchView: SearchView,
     private val repository: Repository,
 ) {
     fun search(query: String?) {
         if (query != null) {
             // Get full list from json file
-            val result = repository.readFile().filter { it.name == query }
+            val result = repository.getCities().filter { it.name == query }
             //check list
             if (result.isNotEmpty()) {
-                view?.setAdapter(result)
+                searchView.setAdapter(result)
             } else {
-                view?.pageNotFound()
+                searchView.pageNotFound()
             }
         } else {
-            view?.pageNotFound()
+            searchView.pageNotFound()
         }
     }
-
-    fun clearData() { repository.clearData() }
 }

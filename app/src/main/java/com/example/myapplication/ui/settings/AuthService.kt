@@ -17,16 +17,12 @@ class AuthService : Service() {
     override fun onBind(intent: Intent): IBinder? { return null }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        ioScope.launch {
-            AppPrefDataStore(applicationContext).setPrefUserLogin()
-        }
+        ioScope.launch { AppPrefDataStore(applicationContext).setPrefUserLogin() }
         stopSelf()
         return START_STICKY
     }
 
-
-
-    companion object{
+    companion object {
         fun newInstance(context: Context) = Intent(context, AuthService::class.java)
     }
 }

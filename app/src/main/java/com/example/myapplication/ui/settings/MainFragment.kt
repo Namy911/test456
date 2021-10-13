@@ -17,12 +17,12 @@ import kotlinx.coroutines.launch
 class MainFragment : Fragment() {
     private  var _binding: FragmentMainBinding? = null
     private val binding get()  = _binding!!
-    private lateinit var hostActivity: AppNavigation
+    private lateinit var navigation: AppNavigation
     private lateinit var appPref: AppPrefDataStore
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is AppNavigation){ hostActivity = context }
+        if (context is AppNavigation){ navigation = context }
     }
 
     override fun onCreateView(
@@ -35,11 +35,10 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         appPref = AppPrefDataStore(requireContext())
-        hostActivity.showBottomMenu()
+        navigation.showBottomMenu()
         lifecycleScope.launch{
-            appPref.userPass.collectLatest {
-                binding.textView.text = it.toString()
-                Log.d(TAG, "onViewCreated: $it")
+            appPref.userPass.collectLatest { pass ->
+                binding.textView.text = pass.toString()
             }
         }
     }

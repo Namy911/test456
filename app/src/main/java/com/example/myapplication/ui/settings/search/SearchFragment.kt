@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.settings
+package com.example.myapplication.ui.settings.search
 
 import android.content.Context
 import android.os.Bundle
@@ -6,27 +6,26 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.data.model.CityItem
 import com.example.myapplication.databinding.FragmentSearchBinding
 import com.example.myapplication.AppNavigation
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.utlis.AssistedManager
+import com.example.myapplication.utlis.AssetsManager
 
 
 class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contract.SearchView {
     private var  _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private lateinit var presenter: Presenter
-    private lateinit var hostActivity: AppNavigation
+    private lateinit var searchPresenter: SearchPresenter
+    private lateinit var navigation: AppNavigation
     private lateinit var searchView: SearchView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         // Activity host
-        if (context is AppNavigation){ hostActivity = context }
+        if (context is AppNavigation){ navigation = context }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +43,7 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contrac
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //Setup Presenter instance
-        presenter = Presenter(this, Repository(AssistedManager(requireContext())))
+        searchPresenter = SearchPresenter(this,  Repository(AssetsManager(requireContext())))
         binding.apply {
             toolbar.inflateMenu(R.menu.menu_search)
              searchView = (toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
@@ -62,7 +61,7 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contrac
     // Listener OnQueryText
     private val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            presenter.search(query)
+            searchPresenter.search(query)
             searchView.clearFocus()
             return true
         }

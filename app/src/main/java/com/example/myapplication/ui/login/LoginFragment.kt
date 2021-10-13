@@ -13,6 +13,7 @@ import com.example.myapplication.ui.settings.MainFragment
 import com.example.myapplication.pef.AppPrefDataStore
 import com.example.myapplication.ui.settings.AuthService
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
