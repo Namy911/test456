@@ -11,6 +11,7 @@ import com.example.myapplication.databinding.FragmentLoginBinding
 import com.example.myapplication.AppNavigation
 import com.example.myapplication.ui.settings.MainFragment
 import com.example.myapplication.pef.AppPrefDataStore
+import com.example.myapplication.ui.settings.AuthService
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -43,10 +44,8 @@ class LoginFragment : Fragment() {
                 }
             }
             btnLogin.setOnClickListener {
-//                hostActivity.navigateTo(MainFragment.newInstance())
-                lifecycleScope.launch {
-                    appPref.setPrefUserLogin()
-                }
+                hostActivity.navigateTo(MainFragment.newInstance(), MainFragment.TAG)
+                requireContext().startService(AuthService.newInstance(requireContext()))
             }
             button.setOnClickListener {
                 hostActivity.navigateTo(MainFragment.newInstance(), TAG)

@@ -38,9 +38,7 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hostActivity.apply {
-            showBottomMenu()
-        }
+        hostActivity.showBottomMenu()
         binding.apply {
             search.setOnClickListener {
                 hostActivity.navigateTo(SearchFragment.newInstance(), SearchFragment.TAG)

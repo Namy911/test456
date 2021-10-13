@@ -6,6 +6,7 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.data.model.CityItem
@@ -24,6 +25,7 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contrac
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        // Activity host
         if (context is AppNavigation){ hostActivity = context }
     }
 
@@ -41,12 +43,14 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contrac
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //Setup Presenter instance
         presenter = Presenter(this, Repository(AssistedManager(requireContext())))
         binding.apply {
             toolbar.inflateMenu(R.menu.menu_search)
              searchView = (toolbar.menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
                 setOnQueryTextListener(queryTextListener)
             }
+            //Set Adapter
             cityRoster.apply {
                 adapter = CityAdapter().also { it.submitList(emptyList()) }
                 layoutManager = LinearLayoutManager(
@@ -55,7 +59,7 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contrac
             }
         }
     }
-
+    // Listener OnQueryText
     private val queryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             presenter.search(query)
@@ -67,7 +71,7 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contrac
             return false
         }
     }
-
+    // Presenter set adapter
     override fun setAdapter(list: List<CityItem>) {
         binding.apply {
             if (!cityRoster.isVisible) {
@@ -76,14 +80,15 @@ class SearchFragment : Fragment(), com.example.myapplication.ui.settings.contrac
             if (img404.isVisible) {
                 img404.visibility = View.GONE
             }
+            //set adapter with funded items
             cityRoster.adapter = CityAdapter().also { cityAdapter ->
                 cityAdapter.currentList.clear()
                 cityAdapter.submitList(list)
             }
         }
     }
-
-    override fun pageNotFound(){
+    //Presenter  404
+    override fun pageNotFound() {
         binding.apply {
             if (!img404.isVisible) {
                 img404.visibility = View.VISIBLE

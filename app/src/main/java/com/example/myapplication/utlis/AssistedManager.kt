@@ -2,6 +2,7 @@ package com.example.myapplication.utlis
 
 import android.content.Context
 import com.example.myapplication.pef.AppPrefDataStore
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -11,14 +12,14 @@ import java.io.IOException
 class AssistedManager(private val context: Context) {
     private val ioScope = CoroutineScope(Dispatchers.IO + Job())
 
-    fun getJsonDataFromAsset(): String? {
+     fun getJsonDataFromAsset(): String? {
         return try {
             context.assets.open(FILE_NAME)
                 .bufferedReader()
                 .use { it.readText() }
         } catch (ioException: IOException) {
             ioException.printStackTrace()
-            return null
+            null
         }
     }
 

@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <service
-            android:name=".ui.login.AuthService"
+            android:name=".ui.settings.AuthService"
             android:enabled="true"
             android:exported="true"></service>
+        <service
+            android:name=".ui.login.AuthService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".MainActivity"

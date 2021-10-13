@@ -2,11 +2,13 @@ package com.example.myapplication.data.repository
 
 import com.example.myapplication.data.model.CityItem
 import com.example.myapplication.utlis.AssistedManager
+import com.google.gson.*
 import org.json.JSONObject
+import java.lang.reflect.Type
 
 class Repository(private val assistedManager: AssistedManager) {
-
-    fun setListAdapter(): MutableList<CityItem> {
+    // Read from json file
+    fun readFile(): MutableList<CityItem> {
         val jsonFileString = assistedManager.getJsonDataFromAsset() ?: ""
         val jsonArrayCity = JSONObject(jsonFileString).getJSONArray(NODE_CITY)
         val listAdapter = mutableListOf<CityItem>()
@@ -20,7 +22,7 @@ class Repository(private val assistedManager: AssistedManager) {
         }
         return listAdapter
     }
-
+    // clear data store
     fun clearData(){ assistedManager.clearData() }
 
     companion object{

@@ -9,7 +9,9 @@ class Presenter(
 ) {
     fun search(query: String?) {
         if (query != null) {
-            val result = repository.setListAdapter().filter { it.name == query }
+            // Get full list from json file
+            val result = repository.readFile().filter { it.name == query }
+            //check list
             if (result.isNotEmpty()) {
                 view?.setAdapter(result)
             } else {
